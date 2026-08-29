@@ -1,0 +1,13 @@
+spring:
+  application:
+    name : LocationService
+
+server:
+  port: 7777
+
+eureka:
+  client:
+    service-url:
+      defaultZone :  http://localhost:7778/eureka
+  instance:
+    prefer-ip-address: true
