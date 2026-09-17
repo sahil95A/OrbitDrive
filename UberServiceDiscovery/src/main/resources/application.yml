@@ -1,0 +1,15 @@
+server:
+  port: 7778
+
+spring:
+  application:
+    name: UberServiceDiscovery
+
+eureka:
+  instance:
+    hostname: my-registry
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:7778/eureka/

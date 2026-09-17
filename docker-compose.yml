@@ -1,0 +1,155 @@
+version: "3.8"
+
+networks:
+  uber-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  redis_data:
+
+services:
+  # --------------------------------------------------
+  # 1. SERVICE DISCOVERY (EUREKA SERVER)
+  # --------------------------------------------------
+  service-discovery:
+    build: ./UberServiceDiscovery
+    container_name: uber-service-discovery
+    ports:
+      - "8761:8761"
+    networks:
+      - uber-network
+
+  # --------------------------------------------------
+  # 2. DATABASES & CACHE
+  # --------------------------------------------------
+  mysql:
+    image: mysql:8.0
+    container_name: uber-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "sahil#123"
+      MYSQL_DATABASE: uber_db_local
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - uber-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: uber-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - uber-network
+
+  # --------------------------------------------------
+  # 3. MESSAGE BROKER (KAFKA IN KRAFT MODE - NO ZOOKEEPER)
+  # --------------------------------------------------
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: uber-kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:29092,PLAINTEXT_HOST://13.206.122.90:9092"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_PROCESS_ROLES: "broker,controller"
+      KAFKA_KEY_CONVERTER: "org.apache.kafka.connect.storage.StringConverter"
+      KAFKA_VALUE_CONVERTER: "org.apache.kafka.connect.storage.StringConverter"
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:29093"
+      KAFKA_LISTENERS: "PLAINTEXT://kafka:29092,CONTROLLER://kafka:29093,PLAINTEXT_HOST://0.0.0.0:9092"
+      KAFKA_INTER_BROKER_LISTENER_NAME: "PLAINTEXT"
+      KAFKA_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
+      KAFKA_LOG_DIRS: "/tmp/kraft-combined-logs"
+      CLUSTER_ID: "MkU3OEVBNTcwNTJENDM2Qk"
+    networks:
+      - uber-network
+
+  # --------------------------------------------------
+  # 4. MICROSERVICES
+  # --------------------------------------------------
+  booking-service:
+    build: ./UberBookingService
+    depends_on:
+      - service-discovery
+      - mysql
+      - kafka
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-discovery:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/uber_db_local?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: "sahil#123"
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    networks:
+      - uber-network
+
+  auth-service:
+    build: ./UberProject-AuthService-master
+    depends_on:
+      - service-discovery
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-discovery:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/uber_db_local?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: "sahil#123"
+    networks:
+      - uber-network
+
+  entity-service:
+    build: ./UberProject-EntityService
+    depends_on:
+      - service-discovery
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-discovery:8761/eureka/
+    networks:
+      - uber-network
+
+  location-service:
+    build: ./UberProject-LocationService
+    depends_on:
+      - service-discovery
+      - redis
+      - kafka
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-discovery:8761/eureka/
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    networks:
+      - uber-network
+
+  review-service:
+    build: ./UberReviewService
+    depends_on:
+      - service-discovery
+      - mysql
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-discovery:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/uber_db_local?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: "sahil#123"
+    networks:
+      - uber-network
+
+  socket-server:
+    build: ./UberSocketServer
+    depends_on:
+      - service-discovery
+      - kafka
+    ports:
+      - "8081:8081"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-discovery:8761/eureka/
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    networks:
+      - uber-network
