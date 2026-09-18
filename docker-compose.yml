@@ -12,8 +12,10 @@ services:
   # --------------------------------------------------
   # 1. SERVICE DISCOVERY (EUREKA SERVER)
   # --------------------------------------------------
-  service-discovery:
-    build: ./UberServiceDiscovery
+ service-discovery:
+    build:
+      context: .
+      dockerfile: UberServiceDiscovery/Dockerfile
     container_name: uber-service-discovery
     ports:
       - "8761:8761"
@@ -77,79 +79,58 @@ services:
   # --------------------------------------------------
   # 4. MICROSERVICES
   # --------------------------------------------------
-  booking-service:
-    build: ./UberBookingService
-    depends_on:
-      - service-discovery
-      - mysql
-      - kafka
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-discovery:8761/eureka/
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/uber_db_local?useSSL=false&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: "sahil#123"
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+  entity-service:
+    build:
+      context: .
+      dockerfile: UberProject-EntityService/Dockerfile
+    container_name: uber-entity-service
+    ports:
+      - "8082:8082"
     networks:
       - uber-network
 
   auth-service:
-    build: ./UberProject-AuthService-master
-    depends_on:
-      - service-discovery
-      - mysql
+    build:
+      context: .
+      dockerfile: UberProject-AuthService-master/Dockerfile
+    container_name: uber-auth-service
     ports:
       - "8080:8080"
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-discovery:8761/eureka/
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/uber_db_local?useSSL=false&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: "sahil#123"
     networks:
       - uber-network
 
-  entity-service:
-    build: ./UberProject-EntityService
-    depends_on:
-      - service-discovery
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-discovery:8761/eureka/
-    networks:
-      - uber-network
-
-  location-service:
-    build: ./UberProject-LocationService
-    depends_on:
-      - service-discovery
-      - redis
-      - kafka
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-discovery:8761/eureka/
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-    networks:
-      - uber-network
-
-  review-service:
-    build: ./UberReviewService
-    depends_on:
-      - service-discovery
-      - mysql
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-discovery:8761/eureka/
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/uber_db_local?useSSL=false&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: "sahil#123"
+  booking-service:
+    build:
+      context: .
+      dockerfile: UberBookingService/Dockerfile
+    container_name: uber-booking-service
+    ports:
+      - "8081:8081"
     networks:
       - uber-network
 
   socket-server:
-    build: ./UberSocketServer
-    depends_on:
-      - service-discovery
-      - kafka
+    build:
+      context: .
+      dockerfile: UberSocketServer/Dockerfile
+    container_name: uber-socket-server
     ports:
-      - "8081:8081"
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-discovery:8761/eureka/
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      - "7779:7779"
+    networks:
+      - uber-network
+
+  location-service:
+    build:
+      context: .
+      dockerfile: UberProject-LocationService/Dockerfile
+    container_name: uber-location-service
+    networks:
+      - uber-network
+
+  review-service:
+    build:
+      context: .
+      dockerfile: UberReviewService/Dockerfile
+    container_name: uber-review-service
     networks:
       - uber-network
