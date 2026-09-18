@@ -1,14 +1,12 @@
 FROM gradle:8.14-jdk17 AS build
 WORKDIR /app
 
-# Copy full context so subfolders are accessible
-COPY . .
-
-# Step A: Build and publish EntityService to local Maven cache
+COPY UberProject-EntityService /app/UberProject-EntityService
 WORKDIR /app/UberProject-EntityService
 RUN gradle publishToMavenLocal --rerun-tasks --no-daemon
 
-# Step B: Build UberSocketServer
+WORKDIR /app
+COPY UberSocketServer /app/UberSocketServer
 WORKDIR /app/UberSocketServer
 RUN gradle bootJar --no-daemon
 

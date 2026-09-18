@@ -1,10 +1,14 @@
 FROM gradle:8.14-jdk17 AS build
 WORKDIR /app
-COPY . .
 
+# Copy EntityService source explicitly to force cache invalidation when its files change
+COPY UberProject-EntityService /app/UberProject-EntityService
 WORKDIR /app/UberProject-EntityService
 RUN gradle publishToMavenLocal --rerun-tasks --no-daemon
 
+# Copy AuthService source and build
+WORKDIR /app
+COPY UberProject-AuthService-master /app/UberProject-AuthService-master
 WORKDIR /app/UberProject-AuthService-master
 RUN gradle bootJar --no-daemon
 

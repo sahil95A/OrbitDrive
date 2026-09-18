@@ -1,10 +1,12 @@
 FROM gradle:8.14-jdk17 AS build
 WORKDIR /app
-COPY . .
 
+COPY UberProject-EntityService /app/UberProject-EntityService
 WORKDIR /app/UberProject-EntityService
 RUN gradle publishToMavenLocal --rerun-tasks --no-daemon
 
+WORKDIR /app
+COPY UberBookingService /app/UberBookingService
 WORKDIR /app/UberBookingService
 RUN gradle bootJar --no-daemon
 
