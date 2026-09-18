@@ -33,7 +33,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testAnnotationProcessor 'org.projectlombok:lombok'
-    implementation 'org.example:UberProject-EntityService:0.0.7-SNAPSHOT'
+    implementation 'org.example:UberProject-EntityService:0.0.8-SNAPSHOT'
     implementation('com.squareup.retrofit2:retrofit:2.4.0')
     implementation('com.squareup.retrofit2:converter-gson:2.4.0')
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:5.0.2'
