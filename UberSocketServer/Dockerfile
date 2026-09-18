@@ -1,14 +1,10 @@
 FROM gradle:8.14-jdk17 AS build
 WORKDIR /app
 
-COPY UberProject-EntityService /app/UberProject-EntityService
-WORKDIR /app/UberProject-EntityService
-RUN gradle publishToMavenLocal --rerun-tasks --no-daemon
+COPY . .
 
-WORKDIR /app
-COPY UberSocketServer /app/UberSocketServer
-WORKDIR /app/UberSocketServer
-RUN gradle bootJar --no-daemon
+RUN cd /app/UberProject-EntityService && gradle publishToMavenLocal --no-daemon \
+    && cd /app/UberSocketServer && gradle bootJar --no-daemon
 
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
