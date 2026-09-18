@@ -1,12 +1,11 @@
-# Stage 1: Build the JAR using Gradle
 FROM gradle:8.14-jdk17 AS build
 WORKDIR /app
 COPY . .
+WORKDIR /app/UberSocketServer
 RUN gradle bootJar --no-daemon
 
-# Stage 2: Run the application
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-COPY --from=build /app/build/libs/*.jar app.jar
-EXPOSE 8761
+COPY --from=build /app/UberSocketServer/build/libs/*.jar app.jar
+EXPOSE 7779
 ENTRYPOINT ["java", "-jar", "app.jar"]
