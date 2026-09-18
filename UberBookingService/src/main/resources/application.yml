@@ -12,7 +12,7 @@ spring:
   application:
     name: UberBookingService
   datasource:
-    url: jdbc:mysql://localhost3306/Uber_Db_Local
+    url: url: jdbc:mysql://mysql:3306/Uber_Db_Local
     username: root
     password: sahil#123
   jpa:
