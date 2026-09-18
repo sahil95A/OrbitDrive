@@ -12,7 +12,7 @@ services:
   # --------------------------------------------------
   # 1. SERVICE DISCOVERY (EUREKA SERVER)
   # --------------------------------------------------
- service-discovery:
+  service-discovery:
     build:
       context: .
       dockerfile: UberServiceDiscovery/Dockerfile
