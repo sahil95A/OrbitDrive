@@ -63,3 +63,11 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+// Ensure a standard library JAR is produced instead of an executable Boot JAR
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}

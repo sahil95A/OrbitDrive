@@ -3,7 +3,7 @@ WORKDIR /app
 COPY . .
 
 WORKDIR /app/UberProject-EntityService
-RUN gradle publishToMavenLocal --no-daemon
+RUN gradle publishToMavenLocal --rerun-tasks --no-daemon
 
 WORKDIR /app/UberBookingService
 RUN gradle bootJar --no-daemon

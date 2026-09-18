@@ -6,7 +6,7 @@ COPY . .
 
 # Step A: Build and publish EntityService to local Maven cache
 WORKDIR /app/UberProject-EntityService
-RUN gradle publishToMavenLocal --no-daemon
+RUN gradle publishToMavenLocal --rerun-tasks --no-daemon
 
 # Step B: Build UberSocketServer
 WORKDIR /app/UberSocketServer
