@@ -29,10 +29,11 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'org.example:UberProject-EntityService:0.0.8-SNAPSHOT'
-// Flyway runtime dependencies for Spring Boot 3 + MySQL
-    implementation 'org.flywaydb:flyway-core'
-    implementation 'org.flywaydb:flyway-mysql'
+    // Exclude flyway from UberProject-EntityService
+    implementation('org.example:UberProject-EntityService:0.0.8-SNAPSHOT') {
+        exclude group: 'org.flywaydb', module: 'flyway-core'
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-flyway'
+    }
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:4.1.1'
 
 // Source: https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka
