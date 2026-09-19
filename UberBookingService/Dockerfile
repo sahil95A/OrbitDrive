@@ -2,6 +2,10 @@ FROM gradle:8.14-jdk17 AS build
 WORKDIR /app
 
 COPY . .
+# Build and publish shared EntityService to local Maven cache
+RUN cd /app/UberProject-EntityService && gradle publishToMavenLocal --no-daemon
+
+# Build BookingService
 WORKDIR /app/UberBookingService
 RUN gradle clean bootJar --no-daemon
 
