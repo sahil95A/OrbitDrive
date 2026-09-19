@@ -1,0 +1,40 @@
+server:
+  port: 7475
+
+spring:
+  application:
+    name: UberProject-AuthService
+  datasource:
+    url: jdbc:mysql://mysql:3306/Uber_Db_Local
+    username: root
+    password: "sahil#123"
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+  main:
+    allow-bean-definition-overriding: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://service-discovery:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+logging:
+  level:
+    org.springframework.data: DEBUG
+
+jwt:
+  expiry: 3600
+  secret: algocampalgocampalgocampalgocampalgocampalgocampalgocampalgocampalgocampalgocampalgocampalgocampalgocampal
+
+cookie:
+  expiry: 3600
