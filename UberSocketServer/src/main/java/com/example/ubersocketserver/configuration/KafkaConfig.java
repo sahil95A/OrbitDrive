@@ -30,7 +30,7 @@ public class KafkaConfig {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "172.24.65.33:9092");
+                "uber-kafka:9092");
         configProps.put(
                 ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,   //serializeing the data
                 StringSerializer.class);
@@ -52,7 +52,7 @@ public class KafkaConfig {
         Map<String, Object> props = new HashMap<>();
         props.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "172.24.65.33:9092");
+                "uber-kafka:9092");
         props.put(
                 ConsumerConfig.GROUP_ID_CONFIG,
                 "sample-group");
