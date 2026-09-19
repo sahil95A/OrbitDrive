@@ -26,6 +26,7 @@ services:
   mysql:
     image: mysql:8.0
     container_name: uber-mysql
+    command: --bind-address=0.0.0.0
     environment:
       MYSQL_ROOT_PASSWORD: "sahil#123"
       MYSQL_DATABASE: uber_db_local
