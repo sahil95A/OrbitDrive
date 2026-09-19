@@ -107,8 +107,10 @@ services:
     ports:
       - "7477:7477"
     depends_on:
-      - mysql
-      - service-discovery
+      mysql:
+        condition: service_started
+      service-discovery:
+        condition: service_started
     networks:
       - uber-network
 
