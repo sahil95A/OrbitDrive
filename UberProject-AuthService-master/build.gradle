@@ -39,6 +39,7 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.12.5'
 
     implementation 'org.example:UberProject-EntityService:0.0.8-SNAPSHOT'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:5.0.2'
 
 }
 

@@ -32,6 +32,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.flywaydb:flyway-mysql:8.4.4'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:5.0.2'
 }
 
 tasks.named('test') {
