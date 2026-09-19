@@ -1,6 +1,8 @@
 spring:
+  application:
+    name: UBERSOCKETSERVER
   kafka:
-    bootstrap-servers: 172.24.65.33:9092
+    bootstrap-servers: kafka:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -9,11 +11,17 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: sample-group
       auto-offset-reset: earliest
-
-  application:
-    name: UberSocketServer
+  datasource:
+    url: jdbc:mysql://mysql:3306/uber_db_local?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: "sahil#123"
+  jpa:
+    hibernate:
+      ddl-auto: none
   main:
     allow-bean-definition-overriding: true
+  flyway:
+    enabled: false
 
 server:
   port: 7779
@@ -23,4 +31,4 @@ eureka:
     service-url:
       defaultZone: http://service-discovery:8761/eureka/
   instance:
-    preferIpAddress: true
+    prefer-ip-address: true
