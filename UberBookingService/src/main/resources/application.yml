@@ -15,8 +15,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
-    hibernate:
-      ddl-auto: none
+        hbm2ddl.auto: none
   main:
     allow-bean-definition-overriding: true
   flyway:
