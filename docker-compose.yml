@@ -105,7 +105,10 @@ services:
       dockerfile: UberBookingService/Dockerfile
     container_name: uber-booking-service
     ports:
-      - "8081:8081"
+      - "7477:7477"
+    depends_on:
+      - mysql
+      - service-discovery
     networks:
       - uber-network
 
