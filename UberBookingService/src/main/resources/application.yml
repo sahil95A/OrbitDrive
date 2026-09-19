@@ -7,7 +7,7 @@ spring:
   kafka:
     bootstrap-servers: kafka:9092
   datasource:
-    url: jdbc:mysql://mysql:3306/Uber_Db_Local
+    url: jdbc:mysql://mysql:3306/uber_db_local
     username: root
     password: "sahil#123"
   jpa:
