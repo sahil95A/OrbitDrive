@@ -1,6 +1,9 @@
 spring:
   application:
     name: UBERSOCKETSERVER
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration
   kafka:
     bootstrap-servers: kafka:9092
     producer:
