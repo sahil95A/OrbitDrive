@@ -127,6 +127,8 @@ services:
         condition: service_started
       location-service:
         condition: service_started
+      socket-server:
+        condition: service_started
     networks:
       - uber-network
 
