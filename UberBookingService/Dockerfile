@@ -13,4 +13,5 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY --from=build /app/UberBookingService/build/libs/*.jar app.jar
 EXPOSE 7477
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Change this line at the bottom:
+CMD ["java", "-jar", "app.jar"]

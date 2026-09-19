@@ -16,6 +16,8 @@ spring:
       ddl-auto: validate
   main:
     allow-bean-definition-overriding: true
+  flyway:
+    enabled: false
 
 eureka:
   client:
