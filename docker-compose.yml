@@ -37,15 +37,7 @@ services:
     networks:
       - uber-network
     healthcheck:
-      test:
-        - CMD
-        - mysqladmin
-        - ping
-        - -h
-        - 127.0.0.1
-        - -u
-        - root
-        - -psahil#123
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-psahil#123"]
       interval: 5s
       timeout: 5s
       retries: 10
