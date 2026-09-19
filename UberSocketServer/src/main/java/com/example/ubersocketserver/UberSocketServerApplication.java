@@ -8,6 +8,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EntityScan("com.example.uberprojectentityservice.models")
+@SpringBootApplication(exclude = {FlywayAutoConfiguration.class})
 public class UberSocketServerApplication {
 
     public static void main(String[] args) {
