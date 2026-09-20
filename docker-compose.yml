@@ -147,6 +147,8 @@ services:
       context: .
       dockerfile: UberProject-LocationService/Dockerfile
     container_name: uber-location-service
+    ports:
+      - "7777:7777"
     networks:
       - uber-network
 
