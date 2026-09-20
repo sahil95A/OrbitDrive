@@ -61,7 +61,7 @@ public class DriverRequestController {
                 .driverId(Optional.of(Long.parseLong(userId)))
                 .status("SCHEDULED")
                 .build();
-        ResponseEntity<UpdateBookingResponseDto> result =this.restTemplate.postForEntity("http://localhost:7477/api/v1/booking/" + rideResponseDto.bookingId, requestDto, UpdateBookingResponseDto.class);
+        ResponseEntity<UpdateBookingResponseDto> result =this.restTemplate.postForEntity("http://uber-booking-service:7477/api/v1/booking/" + rideResponseDto.bookingId, requestDto, UpdateBookingResponseDto.class);
         kafkaProducerService.publishMessage("sample-topic", "Hello");
 
         System.out.println(result.getStatusCode());
