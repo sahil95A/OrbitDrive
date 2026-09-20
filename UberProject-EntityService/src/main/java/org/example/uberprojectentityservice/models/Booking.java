@@ -1,12 +1,8 @@
 package org.example.uberprojectentityservice.models;
 
-import java.util.Date;
-
-
-import java.util.Date;
-@EntityjakartapersistenceCascadeType
+import java.time.LocalDateTime;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
@@ -21,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+@Entity
 @Getter
 @Setter
 @Builder
@@ -35,11 +32,9 @@ public class Booking extends BaseModel {
     @Enumerated(value = EnumType.STRING)
     private BookingStatus bookingStatus;
 
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date startTime;
+    private java.time.LocalDateTime startTime;
 
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date endtTime;
+    private java.time.LocalDateTime endTime;
 
     private Long totalDistance;
 
