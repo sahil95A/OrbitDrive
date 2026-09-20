@@ -12,10 +12,11 @@ spring:
     password: "sahil#123"
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
-        hbm2ddl.auto: update
   main:
     allow-bean-definition-overriding: true
   flyway:
