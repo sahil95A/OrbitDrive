@@ -12,7 +12,7 @@ public class RedisConfig {
     @Bean
     public RedisConnectionFactory redisConnectionFactory(){
         JedisConnectionFactory jedisConFactory=new JedisConnectionFactory();
-        jedisConFactory.setHostName("localhost");
+        jedisConFactory.setHostName("uber-redis");
         jedisConFactory.setPort(6379);
         return jedisConFactory;
     }
