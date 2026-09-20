@@ -1,5 +1,6 @@
 package org.example.uberbookingservice.Controllers;
 
+import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import okhttp3.OkHttpClient;
 import org.example.uberbookingservice.apis.LocationServiceApi;
@@ -21,9 +22,26 @@ public class RetroConfig {
     @Autowired
     private EurekaClient eurekaClient;
 
-    private String getServiceUrl(String serviceName){
-        return eurekaClient.getNextServerFromEureka(serviceName,false).getHomePageUrl();
+    private String getServiceUrl(String serviceName) {
+    try {
+        InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka(serviceName, false);
+        if (instanceInfo != null && instanceInfo.getHomePageUrl() != null) {
+            return instanceInfo.getHomePageUrl();
+        }
+    } catch (Exception e) {
+        // Log warning or fallback to container DNS if Eureka lookup fails during boot
     }
+
+    // Fallback to internal Docker container service names
+    if ("LOCATIONSERVICE".equalsIgnoreCase(serviceName)) {
+        return "http://uber-location-service:7777/";
+    }
+    if ("UBERSOCKETSERVER".equalsIgnoreCase(serviceName)) {
+        return "http://uber-socket-server:7779/";
+    }
+
+    throw new RuntimeException("Service " + serviceName + " could not be resolved.");
+}
 
     @Bean
     public LocationServiceApi locationServiceApi(){
