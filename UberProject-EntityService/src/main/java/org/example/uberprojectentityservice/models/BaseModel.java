@@ -8,10 +8,10 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
-@EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 @Getter
 @Setter
+@EntityListeners(AuditingEntityListener.class)
 public class BaseModel {
     @Id // this annotation makes the id property a primary key of our table
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Identity means auto_increment

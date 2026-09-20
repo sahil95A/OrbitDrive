@@ -5,11 +5,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaAuditing
 @EntityScan("org.example.uberprojectentityservice.models")
 @EnableDiscoveryClient
+@EnableJpaRepositories(basePackages = {"org.example.uberbookingservice.repositories"})
 public class UberBookingServiceApplication {
 
     public static void main(String[] args) {

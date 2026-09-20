@@ -1,11 +1,26 @@
 package org.example.uberprojectentityservice.models;
 
-import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.engine.internal.Cascade;
+import java.util.Date;
+
 
 import java.util.Date;
-@Entity
+@EntityjakartapersistenceCascadeType
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Index;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 @Getter
 @Setter
 @Builder
@@ -14,6 +29,7 @@ import java.util.Date;
 @Table(indexes = {
         @Index(columnList = "driver_id")
 })
+
 public class Booking extends BaseModel {
 
     @Enumerated(value = EnumType.STRING)
